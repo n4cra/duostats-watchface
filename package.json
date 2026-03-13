@@ -1,0 +1,35 @@
+{
+  "name": "duostats",
+  "author": "Custom",
+  "version": "1.0.0",
+  "keywords": ["pebble-app"],
+  "private": true,
+  "dependencies": {},
+  "pebble": {
+    "displayName": "DuoStats",
+    "uuid": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "sdkVersion": "3",
+    "enableMultiJS": true,
+    "targetPlatforms": [
+      "aplite",
+      "basalt",
+      "chalk",
+      "diorite",
+      "emery"
+    ],
+    "watchapp": {
+      "watchface": true
+    },
+    "capabilities": ["health"],
+    "messageKeys": {
+      "DARK_MODE": 0,
+      "BOX_A": 1,
+      "BOX_B": 2,
+      "BOX_C": 3,
+      "BOX_D": 4
+    },
+    "resources": {
+      "media": []
+    }
+  }
+}

@@ -1,0 +1,8 @@
+build/
+*.pbw
+__pycache__/
+*.pyc
+.pebble-sdk/
+.vscode/
+.idea/
+*.swp
