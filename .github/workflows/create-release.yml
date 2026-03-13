@@ -14,28 +14,27 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Decode PBW
-        run: |
-          base64 -d .github/pbw_b64.txt > duostats.pbw
-          echo "PBW size: $(wc -c < duostats.pbw) bytes"
-
-      - name: Create Release and Upload Asset
+      - name: Decode PBW and Create Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          # Create the release
-          RELEASE_RESPONSE=$(gh release create v1.0.0 \
-            --title "DuoStats v1.0.0" \
-            --notes "Initial release of DuoStats watchface for Pebble 2.
+          # Decode the pbw
+          python3 -c "
+import base64, sys
+with open('.github/pbw_b64.txt', 'r') as f:
+    data = base64.b64decode(f.read().strip())
+with open('duostats.pbw', 'wb') as f:
+    f.write(data)
+print('PBW decoded:', len(data), 'bytes')
+"
+          # Create release with gh CLI
+          gh release create v1.0.0             --title "DuoStats v1.0.0"             --notes "Initial release of DuoStats watchface for Pebble 2.
 
-## Install
+### Install
 Download \`duostats.pbw\` below and open it with the Pebble / Rebble app on your phone.
 
-## What is included
+### What is included
 - Compiled binaries for all 5 Pebble platforms (diorite/Pebble 2, basalt, chalk, emery, aplite)
 - Time display in top 1/3, four configurable health data boxes in bottom 2/3
 - Dark and light mode
-- Configurable box data sources: Steps, Distance, Calories, Sleep" \
-            duostats.pbw \
-            2>&1)
-          echo "Release result: $RELEASE_RESPONSE"
+- Configurable box data sources: Steps, Distance, Calories, Sleep"             duostats.pbw
