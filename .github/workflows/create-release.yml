@@ -14,22 +14,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Decode PBW
-        run: |
-          python3 -c "
-import base64
-with open('.github/pbw_b64.txt', 'r') as f:
-    data = base64.b64decode(f.read().strip())
-with open('duostats.pbw', 'wb') as f:
-    f.write(data)
-print('PBW size:', len(data), 'bytes')
-"
-
-      - name: Create Release
+      - name: Build Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh release create v1.0.0 \
-            --title "DuoStats v1.0.0" \
-            --notes-file .github/release_notes.md \
-            duostats.pbw
+          openssl enc -d -base64 -A -in .github/pbw_b64.txt -out duostats.pbw
+          echo "PBW size: $(wc -c < duostats.pbw) bytes"
+          gh release create v1.0.0 --title 'DuoStats v1.0.0' --notes-file .github/release_notes.md duostats.pbw
